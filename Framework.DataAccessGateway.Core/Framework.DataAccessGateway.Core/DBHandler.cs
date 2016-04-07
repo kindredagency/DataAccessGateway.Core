@@ -6,7 +6,7 @@ namespace Framework.DataAccessGateway.Core
     /// <summary>
     /// Class DBHandler.
     /// </summary>
-    public class DBHandler : IDBHandler
+    public class DBHandler : IDBHandler 
     {       
         private readonly IDBHandler _independentDbHandler;    
 
