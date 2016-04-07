@@ -76,7 +76,9 @@ namespace UnitTesting
 
             try
             {
-                var result = dbHandler.ExecuteScalar("select count(Id) from Data where BigInt = @BigInt", new { BigInt = 1 }, System.Data.CommandType.Text, transaction);
+                var result = dbHandler.ExecuteScalar("select count(Id) from Data", System.Data.CommandType.Text);
+
+                result = dbHandler.ExecuteScalar("select count(Id) from Data where BigInt = @BigInt", new { BigInt = 1 }, System.Data.CommandType.Text, transaction);
 
                 transaction.Commit();
             }

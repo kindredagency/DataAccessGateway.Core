@@ -104,8 +104,6 @@ namespace UnitTesting
                     InputModel inputModel = new InputModel();
 
                     inputModel.Data_Id = result1.Id;
-
-                    var result2 = dbHandler.ExecuteQuery<DataModel>("InsertAndSelect", inputModel, System.Data.CommandType.StoredProcedure);
                 }               
                 
             }
@@ -131,8 +129,6 @@ namespace UnitTesting
                     InputModel inputModel = new InputModel();
 
                     inputModel.Data_Id = result1.Id;
-
-                    var result = dbHandler.ExecuteQuery<DataModel>("InsertAndSelect", inputModel, System.Data.CommandType.StoredProcedure, transaction);
                 }              
 
                 transaction.Commit();

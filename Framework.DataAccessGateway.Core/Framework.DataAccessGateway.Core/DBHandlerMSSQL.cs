@@ -163,6 +163,9 @@ namespace Framework.DataAccessGateway.Core
         /// <returns>System.Object.</returns>
         public object ExecuteScalar(string queryString, CommandType commandType)
         {
+            if((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteScalar(queryString, null, commandType, DBTransaction);
+
             return ExecuteScalar(queryString, null, commandType, null);
         }
 
@@ -187,6 +190,9 @@ namespace Framework.DataAccessGateway.Core
         /// <returns>System.Object.</returns>
         public object ExecuteScalar(string queryString, DBHandlerParameter[] parameters, CommandType commandType)
         {
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteScalar(queryString, parameters, commandType, DBTransaction);
+
             return ExecuteScalar(queryString, parameters, commandType, null);
         }
 
@@ -201,7 +207,16 @@ namespace Framework.DataAccessGateway.Core
         {
             DBHandlerParameter[] parameters = model.ToDBHandlerParameters();
 
-            var retVal = ExecuteScalar(queryString, parameters, commandType, null);
+            object retVal = null;
+
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+            {
+                retVal = ExecuteScalar(queryString, parameters, commandType, DBTransaction);
+            }
+            else
+            {
+                retVal = ExecuteScalar(queryString, parameters, commandType, null);
+            }
 
             parameters.ToModel(model);
 
@@ -284,7 +299,14 @@ namespace Framework.DataAccessGateway.Core
         /// <param name="commandType">Type of the command.</param>
         public void ExecuteNonQuery(string queryString, CommandType commandType)
         {
-            ExecuteNonQuery(queryString, null,  commandType, null);
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+            {
+                ExecuteNonQuery(queryString, null, commandType, DBTransaction);
+            }
+            else
+            {
+                ExecuteNonQuery(queryString, null, commandType, null);
+            }
         }
 
         /// <summary>
@@ -306,7 +328,14 @@ namespace Framework.DataAccessGateway.Core
         /// <param name="commandType">Type of the command.</param>
         public void ExecuteNonQuery(string queryString, DBHandlerParameter[] parameters, CommandType commandType)
         {
-            ExecuteNonQuery(queryString, parameters, commandType, null);
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+            {
+                ExecuteNonQuery(queryString, parameters, commandType, DBTransaction);
+            }
+            else
+            {
+                ExecuteNonQuery(queryString, parameters, commandType, null);
+            }
         }
 
         /// <summary>
@@ -398,6 +427,9 @@ namespace Framework.DataAccessGateway.Core
         {
             IDbCommand dbCommand = null;
 
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteReader(queryString, null, commandType, DBTransaction, out dbCommand, commandBehavior);
+
             return ExecuteReader(queryString, null, commandType, null, out dbCommand,  commandBehavior);
         }
 
@@ -413,6 +445,9 @@ namespace Framework.DataAccessGateway.Core
         public IDataReader ExecuteReader(string queryString, CommandType commandType, IDbTransaction queryTransaction, CommandBehavior commandBehavior = CommandBehavior.Default)
         {
             IDbCommand dbCommand = null;
+
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteReader(queryString, null, commandType, DBTransaction, out dbCommand, commandBehavior);
 
             return ExecuteReader(queryString, null, commandType, null, out dbCommand, commandBehavior);
         }
@@ -431,6 +466,9 @@ namespace Framework.DataAccessGateway.Core
 
             DBHandlerParameter[] parameters = model.ToDBHandlerParameters();
 
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteReader(queryString, parameters, commandType, DBTransaction, out dbCommand, commandBehavior);
+
             return ExecuteReader(queryString, parameters, commandType, null, out dbCommand, commandBehavior);
         }       
 
@@ -445,6 +483,9 @@ namespace Framework.DataAccessGateway.Core
         public IDataReader ExecuteReader(string queryString, DBHandlerParameter[] parameters, CommandType commandType, CommandBehavior commandBehavior = CommandBehavior.CloseConnection)
         {
             IDbCommand dbCommand = null;
+
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteReader(queryString, parameters, commandType, DBTransaction, out dbCommand, commandBehavior);
 
             return ExecuteReader(queryString, parameters, commandType, null, out dbCommand, commandBehavior);
         }
@@ -553,6 +594,9 @@ namespace Framework.DataAccessGateway.Core
         /// <returns>IList&lt;T&gt;.</returns>
         public IList<T> ExecuteQuery<T>(string queryString, CommandType commandType)
         {
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteQuery<T>(queryString, null, commandType, DBTransaction);
+
             return ExecuteQuery<T>(queryString, null, commandType, null);
         }
 
@@ -579,8 +623,10 @@ namespace Framework.DataAccessGateway.Core
         /// <returns>IList&lt;T&gt;.</returns>
         public IList<T> ExecuteQuery<T>(string queryString, DBHandlerParameter[] parameters, CommandType commandType)
         {
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteQuery<T>(queryString, parameters, commandType, DBTransaction);
+
             return ExecuteQuery<T>(queryString, parameters, commandType, null);
-            
         }
 
         /// <summary>
@@ -595,7 +641,16 @@ namespace Framework.DataAccessGateway.Core
         {
             DBHandlerParameter[] parameters = model.ToDBHandlerParameters();
 
-            var retVal = ExecuteQuery<T>(queryString, parameters, commandType, null);
+            IList<T> retVal = null;
+
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+            {
+                retVal = ExecuteQuery<T>(queryString, parameters, commandType, DBTransaction);
+            }
+            else
+            {
+                retVal = ExecuteQuery<T>(queryString, parameters, commandType, null);
+            }
 
             parameters.ToModel(model);
 
@@ -650,6 +705,9 @@ namespace Framework.DataAccessGateway.Core
 
         public IDBHandlerMultipleResults ExecuteMultiple<T>(string queryString, CommandType commandType) where T : class, IDBHandlerMultipleResults, new()
         {
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteMultiple<T>(queryString, null, commandType, DBTransaction);
+
             return ExecuteMultiple<T>(queryString, null, commandType, null);
         }
 
@@ -676,6 +734,9 @@ namespace Framework.DataAccessGateway.Core
         /// <returns>IDBHandlerMultipleResults.</returns>
         public IDBHandlerMultipleResults ExecuteMultiple<T>(string queryString, DBHandlerParameter[] parameters, CommandType commandType) where T : class, IDBHandlerMultipleResults, new()
         {
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+                return ExecuteMultiple<T>(queryString, parameters, commandType, DBTransaction);
+
             return ExecuteMultiple<T>(queryString, parameters, commandType, null);
         }
 
@@ -691,7 +752,16 @@ namespace Framework.DataAccessGateway.Core
         {
             DBHandlerParameter[] parameters = model.ToDBHandlerParameters();
 
-            var retVal = ExecuteMultiple<T>(queryString, parameters, commandType, null);
+            IDBHandlerMultipleResults retVal = null;
+
+            if ((DBTransaction != null) && (DBTransaction.Connection.State == ConnectionState.Open))
+            {
+                retVal = ExecuteMultiple<T>(queryString, parameters, commandType, DBTransaction);
+            }
+            else
+            {
+                retVal = ExecuteMultiple<T>(queryString, parameters, commandType, null);
+            }
 
             parameters.ToModel(model);
 
