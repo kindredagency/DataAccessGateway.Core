@@ -19,6 +19,12 @@ namespace Framework.DataAccessGateway.Core
         public ParameterDirection? Direction { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether this instance is identity.
+        /// </summary>
+        /// <value><c>true</c> if this instance is identity; otherwise, <c>false</c>.</value>
+        public bool IsIdentity { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DBHandlerProperty"/> class.
         /// </summary>
         /// <param name="dbDataType">Type of the database data.</param>
@@ -45,6 +51,50 @@ namespace Framework.DataAccessGateway.Core
         public DBHandlerProperty(ParameterDirection direction)
         {   
             Direction = direction;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DBHandlerProperty"/> class.
+        /// </summary>
+        /// <param name="isIdentity">if set to <c>true</c> [is identity].</param>
+        public DBHandlerProperty(bool isIdentity)
+        {
+            IsIdentity = isIdentity;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DBHandlerProperty"/> class.
+        /// </summary>
+        /// <param name="dbDataType">Type of the database data.</param>
+        /// <param name="isIdentity">if set to <c>true</c> [is identity].</param>
+        public DBHandlerProperty(DBHandlerDataType dbDataType, bool isIdentity)
+        {
+            DBHandlerDataType = dbDataType;
+            IsIdentity = isIdentity;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DBHandlerProperty"/> class.
+        /// </summary>
+        /// <param name="dbHandlerDataType">Type of the database handler data.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="isIdentity">if set to <c>true</c> [is identity].</param>
+        public DBHandlerProperty(DBHandlerDataType dbHandlerDataType, ParameterDirection direction, bool isIdentity)
+        {
+            DBHandlerDataType = dbHandlerDataType;
+            Direction = direction;
+            IsIdentity = isIdentity;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DBHandlerProperty"/> class.
+        /// </summary>
+        /// <param name="direction">The direction.</param>
+        /// <param name="isIdentity">if set to <c>true</c> [is identity].</param>
+        public DBHandlerProperty(ParameterDirection direction, bool isIdentity)
+        {
+            Direction = direction;
+            IsIdentity = isIdentity;
         }
     }
 }

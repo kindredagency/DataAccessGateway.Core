@@ -89,6 +89,9 @@ namespace Framework.DataAccessGateway.Core
 
                         if (dbHandlerPropertyDescriptionAttribute.Direction != null)
                             parameter.Direction = dbHandlerPropertyDescriptionAttribute.Direction.Value;
+
+                        if (dbHandlerPropertyDescriptionAttribute.IsIdentity)
+                            continue;
                     }
 
                     parameters.Add(parameter);
