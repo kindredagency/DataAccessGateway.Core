@@ -22,14 +22,7 @@ namespace Framework.DataAccessGateway.Core
         {
             if (_connection.State == ConnectionState.Closed)
             {
-                try
-                {
-                    _connection.Open();
-                }
-                catch
-                {
-                    throw;
-                }
+                _connection.Open();
             }
         }
 
@@ -40,14 +33,7 @@ namespace Framework.DataAccessGateway.Core
         {
             if (_connection.State != ConnectionState.Closed)
             {
-                try
-                {
-                    _connection.Close();
-                }
-                catch
-                {
-                    throw;
-                }
+                _connection.Close();
             }
         }
 
@@ -59,17 +45,10 @@ namespace Framework.DataAccessGateway.Core
         {
             DBTransaction = null;
 
-            try
-            {
-                _connection = new SqlConnection(connectionString);
-                _dataContext = new DataContext(_connection) { ObjectTrackingEnabled = false };
+            _connection = new SqlConnection(connectionString);
+            _dataContext = new DataContext(_connection) { ObjectTrackingEnabled = false };
 
-                ConnectionString = connectionString;
-            }
-            catch
-            {
-                throw;
-            }
+            ConnectionString = connectionString;
         }
 
         /// <summary>
@@ -91,17 +70,14 @@ namespace Framework.DataAccessGateway.Core
         /// Gets the connection string.
         /// </summary>
         /// <value>The connection string.</value>
-        public string ConnectionString { get; private set; }
+        public string ConnectionString { get; }
 
         /// <summary>
         /// Gets the database connection.
         /// </summary>
         /// <value>The database connection.</value>
-        public IDbConnection DBConnection
-        {
-            get { return _connection; }
-        }
- 
+        public IDbConnection DBConnection => _connection;
+
         /// <summary>
         /// Begins the transaction.
         /// </summary>
@@ -109,7 +85,7 @@ namespace Framework.DataAccessGateway.Core
         public IDbTransaction BeginTransaction()
         {
             OpenConnection();
-            SqlTransaction transaction = null;
+            SqlTransaction transaction;
             try
             {
                 transaction = _connection.BeginTransaction();
@@ -132,7 +108,7 @@ namespace Framework.DataAccessGateway.Core
         public IDbTransaction BeginTransaction(IsolationLevel isolationLevel)
         {
             OpenConnection();
-            SqlTransaction trans = null;
+            SqlTransaction trans;
             try
             {
                 trans = _connection.BeginTransaction(isolationLevel);
